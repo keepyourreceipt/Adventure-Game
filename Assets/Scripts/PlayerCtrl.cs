@@ -29,15 +29,6 @@ public class PlayerCtrl : MonoBehaviour {
 		// scorekeeper = (ScoreKeeper) FindObjectOfType( typeof(ScoreKeeper) );
 	}
 
-	void Update() {
-		// Player jump
-		if ( Input.GetKeyDown( KeyCode.Space ) ) {			
-			if ( grounded ) {				
-				rb.velocity = new Vector3( rb.velocity.x, jumpForce, 0f );
-			}
-		}
-	}
-
 	void FixedUpdate() {
 		horizAxis = Input.GetAxis("Horizontal");
 
@@ -50,7 +41,13 @@ public class PlayerCtrl : MonoBehaviour {
 		} else {
 			anim.SetBool("grounded", false);
 		}
-	
+
+		// Player jump
+		if ( Input.GetKeyDown( KeyCode.Space ) ) {			
+			if ( grounded ) {				
+				rb.velocity = new Vector3( rb.velocity.x, jumpForce, 0f );
+			}
+		}
 
 		// Move player horizontally
 		if ( horizAxis != 0f ) {
