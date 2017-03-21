@@ -11,6 +11,8 @@ public class PlayerCtrl : MonoBehaviour {
 	private float horizAxis;
 	private float vertVelocity;
 
+	private LevelManager levelManager;
+
 	//private ScoreKeeper scorekeeper;
 
 	public LayerMask mask;
@@ -23,6 +25,7 @@ public class PlayerCtrl : MonoBehaviour {
 		rb = GetComponent<Rigidbody2D>();
 		anim = GetComponent<Animator>();
 		sprite = GetComponent<SpriteRenderer>();
+		levelManager = (LevelManager) FindObjectOfType( typeof( LevelManager ) );
 		// scorekeeper = (ScoreKeeper) FindObjectOfType( typeof(ScoreKeeper) );
 	}
 
@@ -78,9 +81,10 @@ public class PlayerCtrl : MonoBehaviour {
 		}
 	}
 
+	// Kill player and load menu scene
 	void OnTriggerEnter2D( Collider2D other ) {
 		if ( other.gameObject.tag == "Hazard" ) {
-			// TODO: Kill player
+			levelManager.LoadScene( "Main Menu" );
 		}
 	}
 
