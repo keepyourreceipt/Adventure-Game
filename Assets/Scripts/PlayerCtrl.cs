@@ -26,18 +26,11 @@ public class PlayerCtrl : MonoBehaviour {
 		// scorekeeper = (ScoreKeeper) FindObjectOfType( typeof(ScoreKeeper) );
 	}
 
-	// Update is called once per frame
-	void Update () {
-		// Get velocity to control jump animation tree
-		vertVelocity = rb.velocity.y;
-		anim.SetFloat("vertVelocity", vertVelocity);	
-	}
-
 	void FixedUpdate() {
 		horizAxis = Input.GetAxis("Horizontal");
 
 		// Check if player is grounded
-		grounded = Physics2D.OverlapCircle( new Vector2( transform.position.x, transform.position.y - 0.45f ), 0.25f, mask);
+		grounded = Physics2D.OverlapCircle( new Vector2( transform.position.x, transform.position.y - 0.3f ), 0.25f, mask);
 
 		// Set grounded animation variable
 		if ( grounded ) {			
@@ -52,7 +45,6 @@ public class PlayerCtrl : MonoBehaviour {
 				rb.velocity = new Vector3( rb.velocity.x, jumpForce, 0f );
 			}
 		}
-
 
 		// Move player horizontally
 		if ( horizAxis != 0f ) {
@@ -86,8 +78,14 @@ public class PlayerCtrl : MonoBehaviour {
 		}
 	}
 
+	void OnTriggerEnter2D( Collider2D other ) {
+		if ( other.gameObject.tag == "Hazard" ) {
+			// TODO: Kill player
+		}
+	}
+
 	void OnDrawGizmos() {
 		Gizmos.color = Color.cyan;
-		Gizmos.DrawWireSphere( new Vector3(transform.position.x, transform.position.y - 0.45f, transform.position.z), 0.25f);
+		Gizmos.DrawWireSphere( new Vector3(transform.position.x, transform.position.y - 0.3f, transform.position.z), 0.25f);
 	}
 }
