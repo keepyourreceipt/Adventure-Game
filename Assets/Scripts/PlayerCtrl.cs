@@ -39,13 +39,13 @@ public class PlayerCtrl : MonoBehaviour {
 		// Add a little kick to get the player moving
 		if (  Input.GetKeyDown( KeyCode.RightArrow )) {
 			if ( rb.velocity.x < 0.25f ) {
-				rb.AddForce( new Vector2( 42f, 0f ), ForceMode2D.Impulse );
+				rb.AddForce( new Vector2( 32f, 0f ), ForceMode2D.Impulse );
 			}	
 		}
 
 		if (  Input.GetKeyDown( KeyCode.LeftArrow )) {			
 			if ( rb.velocity.x > -0.25f ) {
-				rb.AddForce( new Vector2( -42f, 0f ), ForceMode2D.Impulse );
+				rb.AddForce( new Vector2( -32f, 0f ), ForceMode2D.Impulse );
 			}
 		}
 	}
