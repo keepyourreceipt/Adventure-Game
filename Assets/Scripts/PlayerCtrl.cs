@@ -26,7 +26,28 @@ public class PlayerCtrl : MonoBehaviour {
 		anim = GetComponent<Animator>();
 		sprite = GetComponent<SpriteRenderer>();
 		levelManager = (LevelManager) FindObjectOfType( typeof( LevelManager ) );
-		// scorekeeper = (ScoreKeeper) FindObjectOfType( typeof(ScoreKeeper) );
+	}
+
+	void Update() {
+		// Player jump
+		if ( Input.GetKeyDown( KeyCode.Space ) ) {			
+			if ( grounded ) {				
+				rb.velocity = new Vector3( rb.velocity.x, jumpForce, 0f );
+			}
+		}
+
+		// Add a little kick to get the player moving
+		if (  Input.GetKeyDown( KeyCode.RightArrow )) {
+			if ( rb.velocity.x < 0.25f ) {
+				rb.AddForce( new Vector2( 42f, 0f ), ForceMode2D.Impulse );
+			}	
+		}
+
+		if (  Input.GetKeyDown( KeyCode.LeftArrow )) {			
+			if ( rb.velocity.x > -0.25f ) {
+				rb.AddForce( new Vector2( -42f, 0f ), ForceMode2D.Impulse );
+			}
+		}
 	}
 
 	void FixedUpdate() {
@@ -40,13 +61,6 @@ public class PlayerCtrl : MonoBehaviour {
 			anim.SetBool("grounded", true);
 		} else {
 			anim.SetBool("grounded", false);
-		}
-
-		// Player jump
-		if ( Input.GetKeyDown( KeyCode.Space ) ) {			
-			if ( grounded ) {				
-				rb.velocity = new Vector3( rb.velocity.x, jumpForce, 0f );
-			}
 		}
 
 		// Move player horizontally
