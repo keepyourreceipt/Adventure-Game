@@ -102,8 +102,15 @@ public class PlayerCtrl : MonoBehaviour {
 		}
 	}
 
+	void OnCollisionEnter2D( Collision2D other  ) {
+		if ( other.gameObject.tag == "Enemy" ) {
+			rb.AddForce( new Vector2( -50f, 200f ), ForceMode2D.Impulse );
+			// Debug.Log( other.gameObject.tag );
+		}
+	}
+
 	void OnDrawGizmos() {
 		Gizmos.color = Color.cyan;
-		Gizmos.DrawWireSphere( new Vector3(transform.position.x, transform.position.y - 0.3f, transform.position.z), 0.25f);
+		// Gizmos.DrawWireSphere( new Vector3(transform.position.x, transform.position.y - 0.3f, transform.position.z), 0.25f);
 	}
 }
