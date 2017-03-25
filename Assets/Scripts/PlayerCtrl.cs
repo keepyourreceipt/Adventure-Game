@@ -104,7 +104,7 @@ public class PlayerCtrl : MonoBehaviour {
 
 	void OnCollisionEnter2D( Collision2D other  ) {
 		if ( other.gameObject.tag == "Enemy" ) {
-			rb.AddForce( new Vector2( -50f, 200f ), ForceMode2D.Impulse );
+			rb.AddForce( new Vector2( -25f, 50f ), ForceMode2D.Impulse );
 			// Debug.Log( other.gameObject.tag );
 		}
 	}
