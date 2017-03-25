@@ -107,6 +107,22 @@ public class PlayerCtrl : MonoBehaviour {
 			rb.AddForce( new Vector2( -25f, 50f ), ForceMode2D.Impulse );
 			// Debug.Log( other.gameObject.tag );
 		}
+
+		if ( other.gameObject.tag == "Platform" ) 
+		{	
+			// If the player lands on a moving platform, set the player
+			// as a child of the platform to solve movement issues
+			gameObject.transform.parent = other.gameObject.transform;
+		}
+	}
+
+	void OnCollisionExit2D( Collision2D other )
+	{			
+		if ( other.gameObject.tag == "Platform" )
+		{
+			// When the player leaves a platform, reset parent to null			
+			transform.parent = null;
+		}
 	}
 
 	void OnDrawGizmos() {
