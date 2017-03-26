@@ -108,14 +108,6 @@ public class PlayerCtrl : MonoBehaviour {
 	}
 
 	void OnCollisionEnter2D( Collision2D other  ) {
-		// Check to see if the game object is an enemy
-		if ( other.gameObject.tag == "Enemy" ) 
-		{
-			// When hit, move the player away from the enemy
-			rb.AddForce( new Vector2( -25f, 50f ), ForceMode2D.Impulse );
-			TakeDamage(20);
-		}
-
 		// Check to see if the player is touching a platform
 		if ( other.gameObject.tag == "Platform" ) 
 		{				
@@ -123,7 +115,7 @@ public class PlayerCtrl : MonoBehaviour {
 		}
 	}
 
-	void TakeDamage( int damage )
+	public void TakeDamage( int damage )
 	{
 		playerHealth = playerHealth - damage;
 

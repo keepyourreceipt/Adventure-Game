@@ -5,8 +5,10 @@ using UnityEngine;
 public class EnemySlime : MonoBehaviour {
 
 	private bool active;
+
 	private Rigidbody2D rb;
-	private CircleCollider2D[] colliders;
+	private PolygonCollider2D mainCollider;
+	private PlayerCtrl player;
 	private float movement;
 	private SpriteRenderer sprite;
 
@@ -15,51 +17,44 @@ public class EnemySlime : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		active = true;
+
 		rb = GetComponent<Rigidbody2D>();
-		colliders = GetComponents<CircleCollider2D>();
+		mainCollider = GetComponent<PolygonCollider2D>();
 		sprite = GetComponent<SpriteRenderer>();
+
+		// Get a reference to the player object
+		player = (PlayerCtrl)FindObjectOfType ( typeof(PlayerCtrl) );
 	}
-
-	void OnTriggerEnter2D( Collider2D other ) {
-		if( other.gameObject.tag == "Player" ) {
-			Invoke("KillEnemy", 0.1f);
-		}	
-	}
-
-	// When the enemy hits a wall...
-	void OnCollisionEnter2D( Collision2D other ) {
-		if ( other.gameObject.tag == "Obstacles" ) {	
-
-			// Flip the direction the enemy is moving
-			if (  speed > 0f) {				
-				speed = -speed;
-			} else if ( speed < 0f ) {
-				speed = Mathf.Abs( speed );
-			}
-			// Flip the sprite rendered
-			sprite.flipX = !sprite.flipX;		
-		}
-	}
-
-	// Update is called once per frame
+		
 	void Update () {
+		// If enemy is active, move enemy
 		if ( active ) {			
 			rb.velocity = new Vector2( speed, rb.velocity.y );
 		}
 	}
 
-	void OnCollisionExit2D( Collision2D other ) {
-		if ( other.gameObject.tag == "Ground" ) 
-		{
-			active = false;
+	void OnTriggerEnter2D( Collider2D other ) {
+		if( other.gameObject.tag == "Player" ) {
+			// Invoke("KillEnemy", 0.05f);
+		}	
+	}
+		
+	void OnCollisionEnter2D( Collision2D other ) {
+
+		if ( other.gameObject.tag == "Obstacles" ) {	
+
+			// Flip the direction the enemy is moving
+			speed = speed > 0f ? speed = -speed : speed = Mathf.Abs ( speed );
+
+			// Flip the sprite rendered
+			sprite.flipX = !sprite.flipX;		
 		}
 	}
+		
 
-	void KillEnemy() {
-		foreach( CircleCollider2D collider in colliders ) {
-			collider.enabled = false;
-		}
-
+	void KillEnemy() {		
+		mainCollider.enabled = false;
 		active = false;
 	}
 }
+	
