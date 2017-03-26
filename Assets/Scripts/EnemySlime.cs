@@ -44,7 +44,7 @@ public class EnemySlime : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		if ( active ) {			
-			rb.velocity = new Vector2( speed, 0f );
+			rb.velocity = new Vector2( speed, rb.velocity.y );
 		}
 	}
 
