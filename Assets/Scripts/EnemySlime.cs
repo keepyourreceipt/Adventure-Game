@@ -12,6 +12,9 @@ public class EnemySlime : MonoBehaviour {
 	private float movement;
 	private SpriteRenderer sprite;
 
+	public LayerMask mask;
+	private Collider2D playerCheck;
+
 	public float speed = 1f;
 
 	// Use this for initialization
@@ -31,12 +34,15 @@ public class EnemySlime : MonoBehaviour {
 		if ( active ) {			
 			rb.velocity = new Vector2( speed, rb.velocity.y );
 		}
-	}
 
-	void OnTriggerEnter2D( Collider2D other ) {
-		if( other.gameObject.tag == "Player" ) {
-			// Invoke("KillEnemy", 0.05f);
-		}	
+		// Check to see if the player lands on top of the enemy
+		playerCheck = Physics2D.OverlapCircle( new Vector2( transform.position.x - 0.065f, transform.position.y - 0.07f ), 0.32f, mask);
+
+		// If the player fits the slime form the top, kill slime
+		if ( playerCheck ) {
+			Invoke ("KillEnemy", 0.2f);
+			active = false;
+		}
 	}
 		
 	void OnCollisionEnter2D( Collision2D other ) {
@@ -49,12 +55,26 @@ public class EnemySlime : MonoBehaviour {
 			// Flip the sprite rendered
 			sprite.flipX = !sprite.flipX;		
 		}
+
+		if (  other.gameObject.tag == "Player" ) {
+			if ( active ) {
+				player.TakeDamage ( 20 );
+			}
+		}
 	}
 		
 
 	void KillEnemy() {		
 		mainCollider.enabled = false;
 		active = false;
+	}
+
+	void OnDrawGizmos() {
+	
+		// Enable to see where the overlap circle is being drawn
+		// Gizmos.color = Color.red;
+		// Gizmos.DrawWireSphere (new Vector3 ( transform.position.x - 0.065f, transform.position.y - 0.07f, transform.position.z ), 0.32f);
+
 	}
 }
 	
