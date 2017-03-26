@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using UnityEngine.UI;
 
 public class PlayerCtrl : MonoBehaviour {
 
@@ -14,6 +15,10 @@ public class PlayerCtrl : MonoBehaviour {
 	private LevelManager levelManager;
 
 	//private ScoreKeeper scorekeeper;
+
+	private int playerHealth = 100;
+
+	public Text playerHealthUI;
 
 	public LayerMask mask;
 
@@ -98,22 +103,48 @@ public class PlayerCtrl : MonoBehaviour {
 	// Kill player and load menu scene
 	void OnTriggerEnter2D( Collider2D other ) {
 		if ( other.gameObject.tag == "Hazard" ) {
-			levelManager.LoadScene( "Main Menu" );
+			TakeDamage(100);
 		}
 	}
 
 	void OnCollisionEnter2D( Collision2D other  ) {
-		if ( other.gameObject.tag == "Enemy" ) {
+		// Check to see if the game object is an enemy
+		if ( other.gameObject.tag == "Enemy" ) 
+		{
+			// When hit, move the player away from the enemy
 			rb.AddForce( new Vector2( -25f, 50f ), ForceMode2D.Impulse );
-			// Debug.Log( other.gameObject.tag );
+			TakeDamage(20);
 		}
 
+		// Check to see if the player is touching a platform
 		if ( other.gameObject.tag == "Platform" ) 
-		{	
-			// If the player lands on a moving platform, set the player
-			// as a child of the platform to solve movement issues
+		{				
 			gameObject.transform.parent = other.gameObject.transform;
 		}
+	}
+
+	void TakeDamage( int damage )
+	{
+		playerHealth = playerHealth - damage;
+
+		if ( playerHealth > 0 ) 
+		{
+			playerHealthUI.text = "HEALTH :" + playerHealth.ToString() + "%";
+		} else if ( playerHealth <= 0 ) {
+			playerHealthUI.text = "HEALTH :0%";
+			ResetPlayer();
+		}
+
+	}
+
+	void ResetPlayer() 
+	{
+		rb.velocity = new Vector3( 0,0,0 );
+		transform.position = new Vector3( 0, 1, 0 );
+		playerHealth = 100;
+		playerHealthUI.text = "HEALTH :" + playerHealth.ToString() + "%";
+		sprite.flipX = false;
+		// Remove player life
 	}
 
 	void OnCollisionExit2D( Collision2D other )
