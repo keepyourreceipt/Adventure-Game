@@ -36,7 +36,7 @@ public class EnemySlime : MonoBehaviour {
 		}
 
 		// Check to see if the player lands on top of the enemy
-		playerCheck = Physics2D.OverlapCircle( new Vector2( transform.position.x - 0.065f, transform.position.y - 0.07f ), 0.32f, mask);
+		playerCheck = Physics2D.OverlapCircle( new Vector2( transform.position.x - 0.065f, transform.position.y - 0.025f ), 0.25f, mask);
 
 		// If the player fits the slime form the top, kill slime
 		if ( playerCheck ) {
@@ -72,8 +72,8 @@ public class EnemySlime : MonoBehaviour {
 	void OnDrawGizmos() {
 	
 		// Enable to see where the overlap circle is being drawn
-		// Gizmos.color = Color.red;
-		// Gizmos.DrawWireSphere (new Vector3 ( transform.position.x - 0.065f, transform.position.y - 0.07f, transform.position.z ), 0.32f);
+		Gizmos.color = Color.red;
+		Gizmos.DrawWireSphere (new Vector3 ( transform.position.x - 0.065f, transform.position.y - 0.05f, transform.position.z ), 0.25f);
 
 	}
 }

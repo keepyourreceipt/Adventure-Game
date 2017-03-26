@@ -13,16 +13,16 @@ public class PlayerCtrl : MonoBehaviour {
 	private float vertVelocity;
 
 	private LevelManager levelManager;
-
-	//private ScoreKeeper scorekeeper;
-
 	private int playerHealth = 100;
 
+	private int lives = 3;
+
 	public Text playerHealthUI;
+	public Text playerLivesUI;
 
 	public LayerMask mask;
 
-	public float horizontalSpeed = 20f;
+	public float horizontalSpeed = 12f;
 	public float jumpForce = 5f; 
 
 	// Use this for initialization
@@ -43,14 +43,14 @@ public class PlayerCtrl : MonoBehaviour {
 
 		// Add a little kick to get the player moving
 		if (  Input.GetKeyDown( KeyCode.RightArrow )) {
-			if ( rb.velocity.x < 0.25f ) {
-				rb.AddForce( new Vector2( 32f, 0f ), ForceMode2D.Impulse );
+			if ( rb.velocity.x < 1f ) {						
+				rb.AddForce( new Vector2( 50f, 0f ), ForceMode2D.Impulse );
 			}	
 		}
 
 		if (  Input.GetKeyDown( KeyCode.LeftArrow )) {			
-			if ( rb.velocity.x > -0.25f ) {
-				rb.AddForce( new Vector2( -32f, 0f ), ForceMode2D.Impulse );
+			if ( rb.velocity.x > -1f ) {
+				rb.AddForce( new Vector2( -50f, 0f ), ForceMode2D.Impulse );
 			}
 		}
 	}
@@ -100,7 +100,6 @@ public class PlayerCtrl : MonoBehaviour {
 		}
 	}
 
-	// Kill player and load menu scene
 	void OnTriggerEnter2D( Collider2D other ) {
 		if ( other.gameObject.tag == "Hazard" ) {
 			TakeDamage(100);
@@ -124,7 +123,12 @@ public class PlayerCtrl : MonoBehaviour {
 			playerHealthUI.text = "HEALTH :" + playerHealth.ToString() + "%";
 		} else if ( playerHealth <= 0 ) {
 			playerHealthUI.text = "HEALTH :0%";
-			ResetPlayer();
+			UpdateLives( -1 );
+			if ( lives == 0 ) {
+				GameOver();
+			} else if ( lives > 0 )  {
+				ResetPlayer();
+			}
 		}
 
 	}
@@ -146,6 +150,15 @@ public class PlayerCtrl : MonoBehaviour {
 			// When the player leaves a platform, reset parent to null			
 			transform.parent = null;
 		}
+	}
+
+	void UpdateLives( int life ) {
+		lives += life;
+		playerLivesUI.text = "X " + lives.ToString();
+	}
+
+	void GameOver() {
+		levelManager.LoadScene("GameOver");
 	}
 
 	void OnDrawGizmos() {
